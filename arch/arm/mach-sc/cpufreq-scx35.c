@@ -48,7 +48,7 @@
 #define GR_GEN1			(REG_GLB_GEN1)
 #endif
 
-#define FREQ_TABLE_SIZE 	10
+#define FREQ_TABLE_SIZE 	26
 #define DVFS_BOOT_TIME	(30 * HZ)
 #define SHARK_TDPLL_FREQUENCY	(768000)
 #define TRANSITION_LATENCY	(100 * 1000) /* ns */
@@ -203,14 +203,51 @@ static struct cpufreq_table_data sc7715_cpufreq_table_data = {
 
 static struct cpufreq_table_data sc8830_cpufreq_table_data_es = {
 	.freq_tbl = {
-		{0, 1000000},
-		{1, SHARK_TDPLL_FREQUENCY},
-		{2, CPUFREQ_TABLE_END},
+		{1, 1497600},
+		{2, 1401600},
+		{3, 1363200},
+		{4, 1300000},
+		{5, 1267200},
+		{6, 1190400},
+		{7, 1113600},
+		{8, 1036800},
+		{9, 960000},
+		{10, 883200},
+		{11, 800000},
+		{12, SHARK_TDPLL_FREQUENCY},
+		{13, 729600},
+		{14, 652800},
+		{15, 576000},
+		{16, 499200},
+		{17, 422400},
+		{18, 345600},
+		{19, 300000},
+		{20, 96000},
+		{21, CPUFREQ_TABLE_END},
 	},
 	.vddarm_mv = {
-		1250000,
-		1200000,
+		1050000,
 		1000000,
+		1000000,
+		985000,
+		970000,
+		960000,
+		950000,
+		940000,
+		930000,
+		920000,
+		910000,
+		900000,
+		890000,
+		880000,
+		870000,
+		860000,
+		850000,
+		840000,
+		830000,
+		820000,
+		810000,
+		810000,
 	},
 };
 
@@ -232,18 +269,50 @@ static struct cpufreq_table_data sc8830t_cpufreq_table_data_es = {
 #else
 static struct cpufreq_table_data sc8830t_cpufreq_table_data_es_1300 = {
 	.freq_tbl = {
-		{0, 1300000},
-		{1, 1200000},
-		{2, 1000000},
-		{3, SHARK_TDPLL_FREQUENCY},
-		{4, CPUFREQ_TABLE_END},
+		{1, 1497600},
+		{2, 1401600},
+		{3, 1363200},
+		{4, 1300000},
+		{5, 1267200},
+		{6, 1190400},
+		{7, 1113600},
+		{8, 1036800},
+		{9, 960000},
+		{10, 883200},
+		{11, 800000},
+		{12, SHARK_TDPLL_FREQUENCY},
+		{13, 729600},
+		{14, 652800},
+		{15, 576000},
+		{16, 499200},
+		{17, 422400},
+		{18, 345600},
+		{19, 300000},
+		{20, 96000},
+		{21, CPUFREQ_TABLE_END},
 	},
-	.vddarm_mv = {
+	.vddarm_mv = {		
 		1050000,
 		1000000,
+		985000,
+		970000,
+		960000,
+		950000,
+		940000,
+		930000,
+		920000,
+		910000,
 		900000,
-		900000,
-		900000,
+		890000,
+		880000,
+		870000,
+		860000,
+		850000,
+		840000,
+		830000,
+		820000,
+		810000,
+		810000,
 	},
 };
 #endif
@@ -434,7 +503,7 @@ static int sprd_cpufreq_verify_speed(struct cpufreq_policy *policy)
 	return cpufreq_frequency_table_verify(policy, sprd_cpufreq_conf->freq_tbl);
 }
 
-unsigned int cpufreq_min_limit = ULONG_MAX;
+unsigned int cpufreq_min_limit = 96000;
 unsigned int cpufreq_max_limit = 0;
 unsigned int dvfs_score_select = 5;
 unsigned int dvfs_unplug_select = 2;
@@ -513,8 +582,8 @@ static void sprd_set_cpureq_limit(void)
 	int i;
 	struct cpufreq_frequency_table *tmp = sprd_cpufreq_conf->freq_tbl;
 	for (i = 0; (tmp[i].frequency != CPUFREQ_TABLE_END); i++) {
-		cpufreq_min_limit = min(tmp[i].frequency, cpufreq_min_limit);
-		cpufreq_max_limit = max(tmp[i].frequency, cpufreq_max_limit);
+		cpufreq_min_limit = min(tmp[21].frequency, cpufreq_min_limit);
+		cpufreq_max_limit = max(tmp[0].frequency, cpufreq_max_limit);
 	}
 	pr_info("--xing-- %s max=%u min=%u\n", __func__, cpufreq_max_limit, cpufreq_min_limit);
 }
